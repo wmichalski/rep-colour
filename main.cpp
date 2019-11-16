@@ -10,7 +10,7 @@ rgb_t get_colour(int x, int y)
 {
     rgb_t colour;
     int clr;
-    double wsp = (double)y/(100+pow(x,0.85))+(double)y/2000;
+    double wsp = (double)y / (100 + pow(x, 0.85)) + (double)y / 2000;
 
     colour.red = 255;
     colour.green = 255;
@@ -18,16 +18,16 @@ rgb_t get_colour(int x, int y)
 
     if (wsp < 1.66)
     {
-        clr = round((((wsp-1)/0.666666666)*0.2+0.8)*256-1);
+        clr = round((((wsp - 1) / 0.666666666) * 0.2 + 0.8) * 256 - 1);
 
         colour.red = 255;
         colour.green = 255;
         colour.blue = clr;
     }
 
-    if(wsp < 1)
+    if (wsp < 1)
     {
-        clr = round((0.5+0.5*wsp)*256-1);
+        clr = round((0.5 + 0.5 * wsp) * 256 - 1);
 
         colour.red = clr;
         colour.green = clr;
@@ -43,8 +43,8 @@ void thick_highlight(int x1, int y1, bitmap_image &image)
     {
         for (unsigned int x = 0; x < image.width(); ++x)
         {
-            if ((x==x1+1 && y!= y1) || (x==x1-1 && y!= y1) ||  (y==y1-1 && x!= x1) || (y==y1+1 && x!= x1) )
-                image.set_pixel(x, y, 00,00,00);
+            if ((x == x1 + 1 && y != y1) || (x == x1 - 1 && y != y1) || (y == y1 - 1 && x != x1) || (y == y1 + 1 && x != x1))
+                image.set_pixel(x, y, 00, 00, 00);
         }
     }
 }
@@ -56,7 +56,7 @@ void thin_highlight(int x1, int y1, bitmap_image &image)
         for (unsigned int x = 0; x < image.width(); ++x)
         {
             if ((x == x1 || y == y1) && !(x == x1 && y == y1))
-                image.set_pixel(x, y, 00,00,00);
+                image.set_pixel(x, y, 00, 00, 00);
         }
     }
 }
@@ -79,38 +79,38 @@ int main()
 
     double scale_w, scale_h;
 
-    scale_w = (double)src_w/des_w;
-    scale_h = (double)src_h/des_h;
+    scale_w = (double)src_w / des_w;
+    scale_h = (double)src_h / des_h;
 
-    int scaled_rep = round(rep/scale_h);
-    int scaled_posts = round(posts/scale_w);
+    int scaled_rep = round(rep / scale_h);
+    int scaled_posts = round(posts / scale_w);
 
     for (unsigned int y = 0; y < image.height(); ++y)
     {
         for (unsigned int x = 0; x < image.width(); ++x)
         {
-            image.set_pixel(x, y, get_colour(round(scale_w*x), round(scale_h*y)));
+            image.set_pixel(x, y, get_colour(round(scale_w * x), round(scale_h * y)));
         }
     }
 
-    wsp = (double)rep/(100+pow(posts,0.85))+(double)rep/2000;
+    wsp = (double)rep / (100 + pow(posts, 0.85)) + (double)rep / 2000;
     cout << "\nYour wsp: " << wsp;
     rgb_t user_clr = get_colour(posts, rep);
-    cout << "\nYour colour: #" << hex << setfill('0') << setw(2) << (int)user_clr.red << std::setw(2) << (int)user_clr.green << std::setw(2) <<(int)user_clr.blue;
+    cout << "\nYour colour: #" << hex << setfill('0') << setw(2) << (int)user_clr.red << std::setw(2) << (int)user_clr.green << std::setw(2) << (int)user_clr.blue;
 
-    if(highlight == 2)
+    if (highlight == 2)
         thick_highlight(scaled_posts, scaled_rep, image);
-    if(highlight == 1)
+    if (highlight == 1)
         thin_highlight(scaled_posts, scaled_rep, image);
 
-    if(scaled_posts>=0 && scaled_rep>=0)
+    if (scaled_posts >= 0 && scaled_rep >= 0)
     {
         user_clr = image.get_pixel(scaled_posts, scaled_rep);
-        cout << "\nColour from map: #" << hex << setfill('0') << setw(2) << (int)user_clr.red << std::setw(2) << (int)user_clr.green << std::setw(2) <<(int)user_clr.blue;
+        cout << "\nColour from map: #" << hex << setfill('0') << setw(2) << (int)user_clr.red << std::setw(2) << (int)user_clr.green << std::setw(2) << (int)user_clr.blue;
         cout << "\n\nScale X: " << scale_w << "\nScale Y: " << scale_h;
     }
 
-    string output = "rep_";
+    string output = "bin/rep_";
     output.append(to_string(src_h));
     output.append("x");
     output.append(to_string(src_w));
